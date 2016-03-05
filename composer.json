@@ -1,0 +1,29 @@
+{
+  "name": "simpleapisecurity/php",
+  "description": "PHP bindings for libsodium in PHP.",
+  "type": "library",
+  "homepage": "https://github.com/simpleapisecurity/php",
+  "require": {
+    "php": ">=5.5.9",
+    "ext-libsodium": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Steven Crothers",
+      "email": "steven.crothers@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SimpleAPISecurity\\PHP\\": "src/"
+    }
+  },
+  "support": {
+    "issues": "https://github.com/simpleapisecurity/php/issues",
+    "source": "https://github.com/simpleapisecurity/php"
+  }
+}
