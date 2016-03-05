@@ -101,4 +101,56 @@ class Hash
 
         return \Sodium\crypto_shorthash($msg, $key);
     }
+
+    /**
+     * Hashes a password for storage and later comparison.
+     *
+     * @param string $password The password to be hashed for storage.
+     * @return string
+     * @throws InvalidTypeException
+     */
+    public static function hashPassword($password)
+    {
+        # Check to make sure the $msg variable is a string.
+        if (!is_string($password)) {
+            throw new InvalidTypeException('Expected string parameter for password in hashPassword');
+        }
+
+        return \Sodium\crypto_pwhash_scryptsalsa208sha256_str(
+            $password,
+            Constants::PWHASH_SCRYPTSALSA208SHA256_OPSLIMIT_INTERACTIVE,
+            Constants::PWHASH_SCRYPTSALSA208SHA256_MEMLIMIT_INTERACTIVE
+        );
+    }
+
+    /**
+     * Test if a password is valid against it's stored hash.
+     *
+     * @param string $password The client provided password to check.
+     * @param string $passwordHash The saved password hash for comparison.
+     * @return bool
+     * @throws InvalidTypeException
+     */
+    public static function verifyPassword($password, $passwordHash)
+    {
+        # Check to make sure the $msg variable is a string.
+        if (!is_string($password)) {
+            throw new InvalidTypeException('Expected string parameter for password in verifyPassword');
+        }
+
+        # Check to make sure the $msg variable is a string.
+        if (!is_string($passwordHash)) {
+            throw new InvalidTypeException('Expected string parameter for passwordHash in verifyPassword');
+        }
+
+        if (\Sodium\crypto_pwhash_scryptsalsa208sha256_str_verify($passwordHash, $password)) {
+            \Sodium\memzero($password);
+
+            return true;
+        } else {
+            \Sodium\memzero($password);
+
+            return false;
+        }
+    }
 }

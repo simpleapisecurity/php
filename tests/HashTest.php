@@ -55,4 +55,15 @@ class HashTest extends PHPUnit_Framework_TestCase
         $this->assertTrue((strlen($key) === Constants::GENERICHASH_KEYBYTES_MIN));
         $this->assertTrue((strlen(Hash::shortHash('test', $key)) === 8));
     }
+
+    /**
+     * @requires extension libsodium
+     */
+    public function passwordTest()
+    {
+        $password = 'testing';
+        $passwordHash = Hash::hashPassword($password);
+        $this->assertTrue(Hash::verifyPassword($password, $passwordHash));
+        $this->assertFalse(Hash::verifyPassword('notcorrect', $passwordHash));
+    }
 }
