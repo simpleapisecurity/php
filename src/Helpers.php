@@ -9,30 +9,6 @@ namespace SimpleAPISecurity\PHP;
 class Helpers
 {
     /**
-     * The message produced if a NONCE has progressed.
-     * @const NONCE_MSG_PROGRESSED
-     */
-    const NONCE_MSG_PROGRESSED = 'MSG_PROGRESSED ';
-
-    /**
-     * The message produced if a NONCE is identical.
-     * @const NONCE_MSG_SAME
-     */
-    const NONCE_MSG_SAME = 'MSG_SAME';
-
-    /**
-     * The message produced if a NONCE has fast forwarded.
-     * @const NONCE_MSG_FAST_FORWARD
-     */
-    const NONCE_MSG_FAST_FORWARD = 'MSG_FAST_FORWARD';
-
-    /**
-     * The message produced if determining NONCE is impossible.
-     * @const NONCE_UNKNOWN
-     */
-    const NONCE_UNKNOWN = 'NONCE_UNKNOWN';
-
-    /**
      * Converts binary data to hexadecimal data.
      *
      * @param string $string String containing binary data to convert to hexadecimal.

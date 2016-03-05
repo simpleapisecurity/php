@@ -1,6 +1,7 @@
 <?php
 
 use SimpleAPISecurity\PHP\Entropy;
+use SimpleAPISecurity\PHP\Constants;
 
 class EntropyTest extends PHPUnit_Framework_TestCase
 {
@@ -16,16 +17,16 @@ class EntropyTest extends PHPUnit_Framework_TestCase
         $this->assertTrue((is_string($randomString)));
 
         # Ensure that the string is the correct length.
-        $this->assertTrue((strlen($randomString) === Entropy::BYTES));
+        $this->assertTrue((strlen($randomString) === Constants::BYTES));
 
         # Generate a new random string of bytes.
-        $randomNewString = Entropy::bytes(Entropy::BYTES + 32);
+        $randomNewString = Entropy::bytes(Constants::BYTES + 32);
 
         # Ensure the string is actually a string.
         $this->assertTrue((is_string($randomNewString)));
 
         # Ensure that the string is the correct length.
-        $this->assertTrue((strlen($randomNewString) === Entropy::BYTES + 32));
+        $this->assertTrue((strlen($randomNewString) === Constants::BYTES + 32));
     }
 
     /**
@@ -35,7 +36,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
      */
     public function testBytesExceptionTooHigh()
     {
-        Entropy::bytes(Entropy::BYTES_MAX + 32);
+        Entropy::bytes(Constants::BYTES_MAX + 32);
     }
 
     /**
@@ -45,7 +46,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
      */
     public function testBytesExceptionTooLow()
     {
-        Entropy::bytes(Entropy::BYTES_MIN - 1);
+        Entropy::bytes(Constants::BYTES_MIN - 1);
     }
 
     /**
@@ -64,13 +65,13 @@ class EntropyTest extends PHPUnit_Framework_TestCase
     public function testRandomInteger()
     {
         # Get a random integer that should always be 1.
-        $randomInteger = Entropy::integer(Entropy::RANGE_MIN);
+        $randomInteger = Entropy::integer(Constants::RANGE_MIN);
 
         # Ensure the string is actually an integer.
         $this->assertTrue((is_integer($randomInteger)));
 
         # Ensure that the string is the correct length.
-        $this->assertTrue(($randomInteger === Entropy::RANGE_MIN));
+        $this->assertTrue(($randomInteger === Constants::RANGE_MIN));
     }
 
     /**
@@ -80,7 +81,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
      */
     public function testRandomIntegerExceptionTooHigh()
     {
-        Entropy::integer(Entropy::RANGE_MAX + 1);
+        Entropy::integer(Constants::RANGE_MAX + 1);
     }
 
     /**
@@ -90,7 +91,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
      */
     public function testRandomIntegerExceptionTooLow()
     {
-        Entropy::integer(Entropy::RANGE_MIN - 1);
+        Entropy::integer(Constants::RANGE_MIN - 1);
     }
 
     /**
