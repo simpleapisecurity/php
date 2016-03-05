@@ -80,4 +80,14 @@ class Entropy
     {
         return \Sodium\randombytes_random16();
     }
+
+    /**
+     * Return a secrete nonce string as entropy to the client.
+     *
+     * @return string
+     */
+    static function generateNonce()
+    {
+        return \Sodium\randombytes_buf(Constants::SECRETBOX_NONCEBYTES);
+    }
 }
