@@ -1,4 +1,5 @@
 # Simple API Security for PHP
+[![Build Status](https://travis-ci.org/simpleapisecurity/php.svg)](https://travis-ci.org/simpleapisecurity/php)
 [![Total Downloads](https://poser.pugx.org/simpleapisecurity/php/d/total.svg)](https://packagist.org/packages/simpleapisecurity/php)
 [![Latest Stable Version](https://poser.pugx.org/simpleapisecurity/php/v/stable.svg)](https://packagist.org/packages/simpleapisecurity/php)
 [![Latest Unstable Version](https://poser.pugx.org/simpleapisecurity/php/v/unstable.svg)](https://packagist.org/packages/simpleapisecurity/php)
