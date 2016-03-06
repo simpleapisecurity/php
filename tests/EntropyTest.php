@@ -1,10 +1,57 @@
 <?php
 
 use SimpleAPISecurity\PHP\Entropy;
+use SimpleAPISecurity\PHP\Helpers;
 use SimpleAPISecurity\PHP\Constants;
 
 class EntropyTest extends PHPUnit_Framework_TestCase
 {
+    private $nonceData = [
+        'old' => 'e9373bdbb866f485484a9c499c1e36eeeb8c6d2a734f5ae1',
+        'new' => 'ea373bdbb866f485484a9c499c1e36eeeb8c6d2a734f5ae1',
+    ];
+
+    /**
+     * @requires extension libsodium
+     */
+    public function testNonceSize()
+    {
+        $this->assertTrue((strlen(Entropy::generateNonce()) === 24));
+    }
+
+    /**
+     * @depends testNonceSize
+     */
+    public function testNonceProgressed()
+    {
+        $this->assertTrue((Helpers::nonceCheck(
+                Helpers::hex2bin($this->nonceData['old']),
+                Helpers::hex2bin($this->nonceData['new'])
+            ) === 'MSG_PROGRESSED'));
+    }
+
+    /**
+     * @depends testNonceSize
+     */
+    public function testNonceSame()
+    {
+        $this->assertTrue((Helpers::nonceCheck(
+                Helpers::hex2bin($this->nonceData['old']),
+                Helpers::hex2bin($this->nonceData['old'])
+            ) === 'MSG_SAME'));
+    }
+
+    /**
+     * @depends testNonceSize
+     */
+    public function testNonceFastForward()
+    {
+        $this->assertTrue((Helpers::nonceCheck(
+                Helpers::hex2bin($this->nonceData['new']),
+                Helpers::hex2bin($this->nonceData['old'])
+            ) === 'MSG_FAST_FORWARD'));
+    }
+
     /**
      * @requires extension libsodium
      */
