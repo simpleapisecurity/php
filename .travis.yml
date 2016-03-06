@@ -7,13 +7,19 @@ php:
   - '5.6'
   - '7.0'
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/debs
+
 before_install:
-  - wget http://ppa.launchpad.net/anton+/dnscrypt/ubuntu/pool/main/libs/libsodium/libsodium-dbg_1.0.3-1pmo1~precise_amd64.deb
-  - wget http://ppa.launchpad.net/anton+/dnscrypt/ubuntu/pool/main/libs/libsodium/libsodium-dev_1.0.3-1pmo1~precise_amd64.deb
-  - wget http://ppa.launchpad.net/anton+/dnscrypt/ubuntu/pool/main/libs/libsodium/libsodium13_1.0.3-1pmo1~precise_amd64.deb
-  - sudo dpkg -i libsodium13_1.0.3-1pmo1~precise_amd64.deb
-  - sudo dpkg -i libsodium-dev_1.0.3-1pmo1~precise_amd64.deb
-  - sudo dpkg -i libsodium-dbg_1.0.3-1pmo1~precise_amd64.deb
+  - mkdir $HOME/debs
+  - wget -N -P $HOME/debs http://ppa.launchpad.net/anton+/dnscrypt/ubuntu/pool/main/libs/libsodium/libsodium-dbg_1.0.3-1pmo1~precise_amd64.deb
+  - wget -N -P $HOME/debs http://ppa.launchpad.net/anton+/dnscrypt/ubuntu/pool/main/libs/libsodium/libsodium-dev_1.0.3-1pmo1~precise_amd64.deb
+  - wget -N -P $HOME/debs http://ppa.launchpad.net/anton+/dnscrypt/ubuntu/pool/main/libs/libsodium/libsodium13_1.0.3-1pmo1~precise_amd64.deb
+  - sudo dpkg -i $HOME/debs/libsodium13_1.0.3-1pmo1~precise_amd64.deb
+  - sudo dpkg -i $HOME/debs/libsodium-dev_1.0.3-1pmo1~precise_amd64.deb
+  - sudo dpkg -i $HOME/debs/libsodium-dbg_1.0.3-1pmo1~precise_amd64.deb
   - pecl install libsodium
 
 install:
