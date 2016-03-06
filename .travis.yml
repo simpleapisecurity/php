@@ -10,10 +10,12 @@ php:
   - nightly
 
 before_install:
-  - sudo add-apt-repository ppa:chris-lea/libsodium -y
-  - sudo add-apt-repository ppa:anton+/dnscrypt -y
-  - sudo apt-get update -q
-  - sudo apt-get install libsodium
+  - wget http://ppa.launchpad.net/anton+/dnscrypt/ubuntu/pool/main/libs/libsodium/libsodium-dbg_1.0.3-1pmo1~precise_amd64.deb
+  - wget http://ppa.launchpad.net/anton+/dnscrypt/ubuntu/pool/main/libs/libsodium/libsodium-dev_1.0.3-1pmo1~precise_amd64.deb
+  - wget http://ppa.launchpad.net/anton+/dnscrypt/ubuntu/pool/main/libs/libsodium/libsodium13_1.0.3-1pmo1~precise_amd64.deb
+  - sudo dpkg -i libsodium13_1.0.3-1pmo1~precise_amd64.deb
+  - sudo dpkg -i libsodium-dev_1.0.3-1pmo1~precise_amd64.deb
+  - sudo dpkg -i libsodium-dbg_1.0.3-1pmo1~precise_amd64.deb
   - pecl install libsodium
 
 install:
