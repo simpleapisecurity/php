@@ -9,22 +9,13 @@ php:
   - hhvm
   - nightly
 
-matrix:
-  include:
-    - php: 5.5.9
-      env: setup=lowest
-    - php: 5.5.9
-      env: setup=stable
-
 install:
-  - if [[ $setup = 'basic' ]]; then travis_retry composer install --no-interaction --prefer-source; fi
-  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
-  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
+  - travis_retry composer install --no-interaction --prefer-source
 
 before_script:
-  - sudo add-apt-repository ppa:chris-lea/libsodium -y
+  - sudo add-apt-repository ppa:anton+/dnscrypt -y
   - sudo apt-get update -q
-  - sudo apt-get install libsodium libsodium-dev
+  - sudo apt-get install libsodium
   - pecl install libsodium
 
 script: vendor/bin/phpunit
