@@ -1,7 +1,5 @@
 language: php
 
-sudo: required
-
 php:
   - '5.5'
   - '5.6'
@@ -12,10 +10,14 @@ php:
 install:
   - travis_retry composer install --no-interaction --prefer-source
 
+addons:
+ apt:
+   packages:
+   - libsodium-dbg
+   - libsodium-dev
+   - libsodium13
+
 before_script:
-  - sudo add-apt-repository ppa:anton+/dnscrypt -y
-  - sudo apt-get update -q
-  - sudo apt-get install libsodium
   - pecl install libsodium
 
 script: vendor/bin/phpunit
