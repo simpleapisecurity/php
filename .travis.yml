@@ -22,6 +22,8 @@ install:
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
 
 before_script:
+  - sudo add-apt-repository ppa:chris-lea/libsodium -y
+  - sudo apt-get update -q
   - sudo apt-get install libsodium libsodium-dev
   - pecl install libsodium
 
