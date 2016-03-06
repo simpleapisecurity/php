@@ -32,7 +32,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testBytes
      * @expectedException SimpleAPISecurity\PHP\Exceptions\OutOfRangeException
-     * @expectedExceptionMessageRegExp #Bytes range: \d+ to \d+#
+     * @expectedExceptionMessageRegExp #Integer range for bytes in Entropy is \d+ to \d+#
      */
     public function testBytesExceptionTooHigh()
     {
@@ -42,7 +42,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testBytes
      * @expectedException SimpleAPISecurity\PHP\Exceptions\OutOfRangeException
-     * @expectedExceptionMessageRegExp #Bytes range: \d+ to \d+#
+     * @expectedExceptionMessageRegExp #Integer range for bytes in Entropy is \d+ to \d+#
      */
     public function testBytesExceptionTooLow()
     {
@@ -52,7 +52,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testBytes
      * @expectedException SimpleAPISecurity\PHP\Exceptions\InvalidTypeException
-     * @expectedExceptionMessage Expected integer parameter for bytes
+     * @expectedExceptionMessage Integer parameter expected for bytes in Entropy
      */
     public function testBytesInvalidType()
     {
@@ -77,7 +77,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testRandomInteger
      * @expectedException SimpleAPISecurity\PHP\Exceptions\OutOfRangeException
-     * @expectedExceptionMessageRegExp #Integer range: \d+ to \d+#
+     * @expectedExceptionMessageRegExp #Integer range for integer in Entropy is \d+ to \d+#
      */
     public function testRandomIntegerExceptionTooHigh()
     {
@@ -87,7 +87,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testRandomInteger
      * @expectedException SimpleAPISecurity\PHP\Exceptions\OutOfRangeException
-     * @expectedExceptionMessageRegExp #Integer range: \d+ to \d+#
+     * @expectedExceptionMessageRegExp #Integer range for integer in Entropy is \d+ to \d+#
      */
     public function testRandomIntegerExceptionTooLow()
     {
@@ -97,7 +97,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testRandomInteger
      * @expectedException SimpleAPISecurity\PHP\Exceptions\InvalidTypeException
-     * @expectedExceptionMessage Expected integer parameter for integer
+     * @expectedExceptionMessage Integer parameter expected for integer in Entropy
      */
     public function testRandomIntegerExceptionInvalidType()
     {

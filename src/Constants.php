@@ -2,7 +2,13 @@
 
 namespace SimpleAPISecurity\PHP;
 
-
+/**
+ * The constants class contains all of the constants which are used throughout the
+ * library for configuration and instantiation of various components.
+ *
+ * @package SimpleAPISecurity\PHP
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 class Constants
 {
     /**

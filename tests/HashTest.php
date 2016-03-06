@@ -29,7 +29,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGenericHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\OutOfRangeException
-     * @expectedExceptionMessageRegExp #generateKey length range: \d+ to \d+#
+     * @expectedExceptionMessageRegExp #Integer range for generateKey in Hash is \d+ to \d+#
      */
     public function testGenerateKeyExceptionHigh()
     {
@@ -39,7 +39,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGenericHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\OutOfRangeException
-     * @expectedExceptionMessageRegExp #generateKey length range: \d+ to \d+#
+     * @expectedExceptionMessageRegExp #Integer range for generateKey in Hash is \d+ to \d+#
      */
     public function testGenerateKeyExceptionLow()
     {
@@ -49,7 +49,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGenericHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\InvalidTypeException
-     * @expectedExceptionMessage Expected integer parameter for generateKey
+     * @expectedExceptionMessage Integer parameter expected for generateKey in Hash
      */
     public function testGenerateKeyExceptionBadValue()
     {
@@ -59,7 +59,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGenericHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\OutOfRangeException
-     * @expectedExceptionMessageRegExp #hash length range: \d+ to \d+#
+     * @expectedExceptionMessageRegExp #Integer range for hash in Hash is \d+ to \d+#
      */
     public function testGenerateHashExceptionHigh()
     {
@@ -69,7 +69,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGenericHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\OutOfRangeException
-     * @expectedExceptionMessageRegExp #hash length range: \d+ to \d+#
+     * @expectedExceptionMessageRegExp #Integer range for hash in Hash is \d+ to \d+#
      */
     public function testGenerateHashExceptionLow()
     {
@@ -79,7 +79,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGenericHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\InvalidTypeException
-     * @expectedExceptionMessage Expected integer parameter for length in hash
+     * @expectedExceptionMessage Integer parameter expected for hash in Hash
      */
     public function testGenerateHashExceptionBadValue()
     {
@@ -89,7 +89,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGenericHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\InvalidTypeException
-     * @expectedExceptionMessage Expected string parameter for message in hash
+     * @expectedExceptionMessage String parameter expected for hash in Hash
      */
     public function testGenerateHashExceptionBadValueMessage()
     {
@@ -99,7 +99,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testGenericHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\InvalidTypeException
-     * @expectedExceptionMessage Expected string parameter for key in hash
+     * @expectedExceptionMessage String parameter expected for hash in Hash
      */
     public function testGenerateHashExceptionBadValueKey()
     {
@@ -139,7 +139,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testShortHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\InvalidTypeException
-     * @expectedExceptionMessage Expected string parameter for message in shortHash
+     * @expectedExceptionMessage String parameter expected for shortHash in Hash
      */
     public function testShortHashBadMessage()
     {
@@ -150,7 +150,7 @@ class HashTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testShortHash
      * @expectedException SimpleAPISecurity\PHP\Exceptions\InvalidTypeException
-     * @expectedExceptionMessage Expected string parameter for key in shortHash
+     * @expectedExceptionMessage String parameter expected for shortHash in Hash
      */
     public function testShortHashBadKey()
     {

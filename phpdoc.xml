@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title><![CDATA[Simple API Security PHP Library]]></title>
+    <parser>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+        <target>docs</target>
+        <extensions>
+            <extension>php</extension>
+        </extensions>
+        <visibility></visibility>
+    </parser>
+    <transformer>
+        <target>docs</target>
+    </transformer>
+    <files>
+        <directory>src</directory>
+    </files>
+</phpdoc>

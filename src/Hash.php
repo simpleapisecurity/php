@@ -2,9 +2,13 @@
 
 namespace SimpleAPISecurity\PHP;
 
-use SimpleAPISecurity\PHP\Exceptions\InvalidTypeException;
-use SimpleAPISecurity\PHP\Exceptions\OutOfRangeException;
-
+/**
+ * A simple drop in hashing library for nearly any application. Uses sodium for hashing operations
+ * in such a way that allow for safe and tamper resistant hashing actions.
+ *
+ * @package SimpleAPISecurity\PHP
+ * @license http://opensource.org/licenses/MIT MIT
+ */
 class Hash
 {
     /**
@@ -12,29 +16,16 @@ class Hash
      *
      * @param int $length Length of the key being generated for hashing.
      * @return string
-     * @throws InvalidTypeException
-     * @throws OutOfRangeException
+     * @throws Exceptions\InvalidTypeException
+     * @throws Exceptions\OutOfRangeException
      */
     public static function generateKey($length = Constants::GENERICHASH_KEYBYTES)
     {
-        # Filter the input to ensure length validity.
-        $filteredInput = filter_var($length, FILTER_VALIDATE_INT, [
-            'options' => [
-                'min_range' => Constants::GENERICHASH_KEYBYTES_MIN,
-                'max_range' => Constants::GENERICHASH_KEYBYTES_MAX,
-            ],
-        ]);
+        # Test the length for validity.
+        Helpers::rangeCheck($length, Constants::GENERICHASH_KEYBYTES_MAX, Constants::GENERICHASH_KEYBYTES_MIN, 'Hash', 'generateKey');
 
-        # Check to make sure we're an integer.
-        if (is_integer($length)) {
-            if ($filteredInput) {
-                return self::hash(Entropy::bytes($filteredInput), '', $length);
-            } else {
-                throw new OutOfRangeException('generateKey length range: '.Constants::GENERICHASH_KEYBYTES_MIN.' to '.Constants::GENERICHASH_KEYBYTES_MAX);
-            }
-        } else {
-            throw new InvalidTypeException('Expected integer parameter for generateKey');
-        }
+        # Return the hash to the client.
+        return self::hash(Entropy::bytes($length), '', $length);
     }
 
     /**
@@ -44,39 +35,20 @@ class Hash
      * @param string $key The key for the message to be hashed against.
      * @param int $length The length of the hash digest.
      * @return string
-     * @throws InvalidTypeException
-     * @throws OutOfRangeException
+     * @throws Exceptions\InvalidTypeException
+     * @throws Exceptions\OutOfRangeException
      */
     public static function hash($msg, $key = '', $length = Constants::GENERICHASH_BYTES)
     {
-        # Filter the input to ensure length validity.
-        $filteredInput = filter_var($length, FILTER_VALIDATE_INT, [
-            'options' => [
-                'min_range' => Constants::GENERICHASH_BYTES_MIN,
-                'max_range' => Constants::GENERICHASH_BYTES_MAX,
-            ],
-        ]);
+        # Test the length for validity.
+        Helpers::rangeCheck($length, Constants::GENERICHASH_BYTES_MAX, Constants::GENERICHASH_BYTES_MIN, 'Hash', 'hash');
 
-        # Check to make sure the $msg variable is a string.
-        if (!is_string($msg)) {
-            throw new InvalidTypeException('Expected string parameter for message in hash');
-        }
+        # Test the message and key for string validity.
+        Helpers::isString($msg, 'Hash', 'hash');
+        Helpers::isString($key, 'Hash', 'hash');
 
-        # Check to make sure the $key variable is a string.
-        if (!is_string($key)) {
-            throw new InvalidTypeException('Expected string parameter for key in hash');
-        }
-
-        # Check to make sure we're an integer.
-        if (is_integer($length)) {
-            if ($filteredInput) {
-                return \Sodium\crypto_generichash($msg, $key, $filteredInput);
-            } else {
-                throw new OutOfRangeException('hash length range: '.Constants::GENERICHASH_BYTES_MIN.' to '.Constants::GENERICHASH_BYTES_MAX);
-            }
-        } else {
-            throw new InvalidTypeException('Expected integer parameter for length in hash');
-        }
+        # Return the hash to the client.
+        return \Sodium\crypto_generichash($msg, $key, $length);
     }
 
     /**
@@ -85,19 +57,13 @@ class Hash
      * @param string $msg The message to be short hashed.
      * @param string $key The key to hash the message against.
      * @return string
-     * @throws InvalidTypeException
+     * @throws Exceptions\InvalidTypeException
      */
     public static function shortHash($msg, $key)
     {
-        # Check to make sure the $msg variable is a string.
-        if (!is_string($msg)) {
-            throw new InvalidTypeException('Expected string parameter for message in shortHash');
-        }
-
-        # Check to make sure the $key variable is a string.
-        if (!is_string($key)) {
-            throw new InvalidTypeException('Expected string parameter for key in shortHash');
-        }
+        # Test the message and key for string validity.
+        Helpers::isString($msg, 'Hash', 'shortHash');
+        Helpers::isString($key, 'Hash', 'shortHash');
 
         return \Sodium\crypto_shorthash($msg, $key);
     }
@@ -107,14 +73,12 @@ class Hash
      *
      * @param string $password The password to be hashed for storage.
      * @return string
-     * @throws InvalidTypeException
+     * @throws Exceptions\InvalidTypeException
      */
     public static function hashPassword($password)
     {
-        # Check to make sure the $msg variable is a string.
-        if (!is_string($password)) {
-            throw new InvalidTypeException('Expected string parameter for password in hashPassword');
-        }
+        # Test the message and key for string validity.
+        Helpers::isString($password, 'Hash', 'hashPassword');
 
         return \Sodium\crypto_pwhash_scryptsalsa208sha256_str(
             $password,
@@ -129,19 +93,13 @@ class Hash
      * @param string $password The client provided password to check.
      * @param string $passwordHash The saved password hash for comparison.
      * @return bool
-     * @throws InvalidTypeException
+     * @throws Exceptions\InvalidTypeException
      */
     public static function verifyPassword($password, $passwordHash)
     {
-        # Check to make sure the $msg variable is a string.
-        if (!is_string($password)) {
-            throw new InvalidTypeException('Expected string parameter for password in verifyPassword');
-        }
-
-        # Check to make sure the $msg variable is a string.
-        if (!is_string($passwordHash)) {
-            throw new InvalidTypeException('Expected string parameter for passwordHash in verifyPassword');
-        }
+        # Test the message and key for string validity.
+        Helpers::isString($password, 'Hash', 'verifyPassword');
+        Helpers::isString($passwordHash, 'Hash', 'verifyPassword');
 
         if (\Sodium\crypto_pwhash_scryptsalsa208sha256_str_verify($passwordHash, $password)) {
             \Sodium\memzero($password);

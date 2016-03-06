@@ -6,8 +6,11 @@ use SimpleAPISecurity\PHP\Exceptions\InvalidTypeException;
 use SimpleAPISecurity\PHP\Exceptions\OutOfRangeException;
 
 /**
- * Class Entropy
+ * The Entropy class provides various methods to return random data to the API client.
+ *
  * @package SimpleAPISecurity\PHP
+ * @license http://opensource.org/licenses/MIT MIT
+ * @todo Possibly rename this class because "Entropy" doesn't make a lot of sense, I don't think.
  */
 class Entropy
 {
@@ -16,29 +19,15 @@ class Entropy
      *
      * @param int $bytes Size of the string of bytes to be generated.
      * @return string
-     * @throws InvalidTypeException
-     * @throws \Exception
+     * @throws Exceptions\InvalidTypeException
+     * @throws Exceptions\OutOfRangeException
      */
     static function bytes($bytes = Constants::BYTES)
     {
-        # Filter the input to validate that we're an integer in range
-        $filteredInput = filter_var($bytes, FILTER_VALIDATE_INT, [
-            'options' => [
-                'min_range' => Constants::BYTES_MIN,
-                'max_range' => Constants::BYTES_MAX,
-            ],
-        ]);
+        # Test the length for validity.
+        Helpers::rangeCheck($bytes, Constants::BYTES_MAX, Constants::BYTES_MIN, 'Entropy', 'bytes');
 
-        # Test if the input is an integer.
-        if (is_integer($bytes)) {
-            if ($filteredInput) {
-                return \Sodium\randombytes_buf($bytes);
-            } else {
-                throw new OutOfRangeException('Bytes range: ' . Constants::BYTES_MIN . ' to ' . Constants::BYTES_MAX);
-            }
-        } else {
-            throw new InvalidTypeException('Expected integer parameter for bytes');
-        }
+        return \Sodium\randombytes_buf($bytes);
     }
 
     /**
@@ -46,29 +35,15 @@ class Entropy
      *
      * @param int $range Upper limit of random numbers to return to the client.
      * @return int
-     * @throws InvalidTypeException
-     * @throws OutOfRangeException
+     * @throws Exceptions\InvalidTypeException
+     * @throws Exceptions\OutOfRangeException
      */
     static function integer($range = Constants::RANGE)
     {
-        # Filter the input to validate that we're an integer in range
-        $filteredInput = filter_var($range, FILTER_VALIDATE_INT, [
-            'options' => [
-                'min_range' => Constants::RANGE_MIN,
-                'max_range' => Constants::RANGE_MAX,
-            ],
-        ]);
+        # Test the length for validity.
+        Helpers::rangeCheck($range, Constants::RANGE_MAX, Constants::RANGE_MIN, 'Entropy', 'integer');
 
-        # Test if the input is an integer.
-        if (is_integer($range)) {
-            if ($filteredInput) {
-                return \Sodium\randombytes_uniform($filteredInput) + 1;
-            } else {
-                throw new OutOfRangeException('Integer range: ' . Constants::RANGE_MIN . ' to ' . Constants::RANGE_MAX);
-            }
-        } else {
-            throw new InvalidTypeException('Expected integer parameter for integer');
-        }
+        return \Sodium\randombytes_uniform($range) + 1;
     }
 
     /**

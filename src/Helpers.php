@@ -2,9 +2,15 @@
 
 namespace SimpleAPISecurity\PHP;
 
+use SimpleAPISecurity\PHP\Exceptions\InvalidTypeException;
+use SimpleAPISecurity\PHP\Exceptions\OutOfRangeException;
+
 /**
- * Class Helpers
+ * The helper class is a set of methods which are designed to help with simple operations
+ * without lengthy instantiation procedures with best practices selected by default.
+ *
  * @package SimpleAPISecurity\PHP
+ * @license http://opensource.org/licenses/MIT MIT
  */
 class Helpers
 {
@@ -100,6 +106,59 @@ class Helpers
     {
         if (\Sodium\memcmp($string1, $string2) !== 0) {
             return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Tests to make sure the item being tested is actually a string.
+     *
+     * @param mixed $item The item being tested for type.
+     * @param string $o The object name to be represented in the exception.
+     * @param string $m The method name to be represented in the exception.
+     * @return bool True if the item is a string.
+     * @throws InvalidTypeException
+     */
+    public static function isString($item, $o, $m)
+    {
+        # Check to make sure the $msg variable is a string.
+        if (!is_string($item)) {
+            throw new InvalidTypeException(sprintf('String parameter expected for %s in %s', $m, $o));
+        }
+
+        return true;
+    }
+
+    /**
+     * Tests to make sure that the integer is within a permissible range.
+     *
+     * @param mixed $input The integer to check.
+     * @param int $high The upper bounds of the integer to check.
+     * @param int $low The lower bounds of the integer to check.
+     * @param string $o The object name to be represented in the exception.
+     * @param string $m The method name to be represented in the exception.
+     * @return bool True if the range check has passed.
+     * @throws OutOfRangeException
+     * @throws InvalidTypeException
+     */
+    public static function rangeCheck($input, $high, $low, $o, $m)
+    {
+        # Test to make sure the incoming range is an integer value.
+        if (is_integer($high) && is_integer($low) && is_integer($input)) {
+            # Filter the input to ensure length validity.
+            $filteredInput = filter_var($input, FILTER_VALIDATE_INT, [
+                'options' => [
+                    'min_range' => $low,
+                    'max_range' => $high,
+                ],
+            ]);
+
+            if (!$filteredInput) {
+                throw new OutOfRangeException('Integer range for '.$m.' in '.$o.' is '.$low.' to '.$high);
+            }
+        } else {
+            throw new InvalidTypeException(sprintf('Integer parameter expected for %s in %s', $m, $o));
         }
 
         return true;

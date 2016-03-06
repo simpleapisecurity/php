@@ -8,7 +8,8 @@
     "ext-libsodium": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.0"
+    "phpunit/phpunit": "~4.0",
+    "phpdocumentor/phpdocumentor": "2.*"
   },
   "license": "MIT",
   "authors": [
