@@ -7,6 +7,9 @@
 
 The Simple API Security library is more logically wrap your application with libsodium.
 
+## Packaged Framework Libraries
+* https://github.com/simpleapisecurity/laravel
+
 ## About Sodium
 The original Sodium project can be located [here](https://github.com/jedisct1/libsodium), the about Sodium is obtained from the readme in the source repository.
 
