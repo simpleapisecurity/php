@@ -13,6 +13,7 @@ class EntropyTest extends PHPUnit_Framework_TestCase
 
     /**
      * @requires extension libsodium
+     * @requires function \Sodium\compare
      */
     public function testNonceSize()
     {
