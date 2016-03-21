@@ -30,26 +30,30 @@ class Encryption
      * @param string $key The key to encrypt the message with.
      * @param string $hashKey The key to hash the key with.
      * @return string The JSON string for the encrypted message.
+     * @throws Exceptions\EncryptionException
      * @throws Exceptions\InvalidTypeException
      * @throws Exceptions\OutOfRangeException
      */
+
     public static function encryptMessage($message, $key, $hashKey = '')
     {
-        # Test the message and key for string validity.
+        // Test the key for string validity.
         Helpers::isString($message, 'Encryption', 'encryptMessage');
         Helpers::isString($key, 'Encryption', 'encryptMessage');
         Helpers::isString($hashKey, 'Encryption', 'encryptMessage');
-
-        # Create a special hashed key for encryption.
+        // Create a special hashed key for encryption.
         $key = Hash::hash($key, $hashKey, Constants::SECRETBOX_KEYBYTES);
-
-        # Generate a nonce for the communication.
+        // Generate a nonce for the communication.
         $nonce = Entropy::generateNonce();
-
-        return base64_encode(json_encode([
-            'msg'   => Helpers::bin2hex(\Sodium\crypto_secretbox($message, $nonce, $key)),
-            'nonce' => Helpers::bin2hex($nonce),
-        ]));
+        // Serialize and encrypt the message object
+        $ciphertext = \Sodium\crypto_secretbox(serialize($message), $nonce, $key);
+        $nonce = base64_encode($nonce);
+        $ciphertext = base64_encode($ciphertext);
+        $json = json_encode(compact('nonce', 'ciphertext'));
+        if (! is_string($json)) {
+            throw new Exceptions\EncryptionException('Failed to encrypt message using key');
+        }
+        return base64_encode($json);
     }
 
     /**
@@ -65,29 +69,51 @@ class Encryption
      */
     public static function decryptMessage($message, $key, $hashKey = '')
     {
-        # Test the message and key for string validity.
+        // Test the message and key for string validity.
         Helpers::isString($message, 'Encryption', 'decryptMessage');
         Helpers::isString($key, 'Encryption', 'decryptMessage');
         Helpers::isString($hashKey, 'Encryption', 'decryptMessage');
-
-        # Create a special hashed key for encryption.
+        // Create a special hashed key for encryption.
         $key = Hash::hash($key, $hashKey, Constants::SECRETBOX_KEYBYTES);
-
-        $messagePacket = base64_decode(json_decode($message, true));
-
-        # Open the secret box using the data provided.
-        $plaintext = \Sodium\crypto_secretbox_open(
-            Helpers::hex2bin($messagePacket['msg']),
-            Helpers::hex2bin($messagePacket['nonce']),
-            $key
-        );
-
-        # Test if the secret box returned usable data.
+        // Validate and decode the paylload.
+        $payload = self::getJsonPayload($message);
+        $nonce = base64_decode($payload['nonce']);
+        $ciphertext = base64_decode($payload['ciphertext']);
+        // Open the secret box using the data provided.
+        $plaintext = \Sodium\crypto_secretbox_open($ciphertext, $nonce, $key);
+        // Test if the secret box returned usable data.
         if ($plaintext === false) {
-            throw new Exceptions\DecryptionException('Failed to decrypt message using key');
+            throw new Exceptions\DecryptionException("Failed to decrypt message using key.");
+        }
+        return unserialize($plaintext);
+    }
+
+    /**
+     * Get the JSON array from the given payload.
+     *
+     * @param  string  $payload
+     * @return array
+     *
+     * @throws Exceptions\DecryptException
+     */
+    private static function getJsonPayload($payload)
+    {
+        $payload = json_decode(base64_decode($payload), true);
+        if (! $payload || self::isInvalidPayload($payload)) {
+            throw new Exceptions\DecryptionException('The payload is invalid.');
         }
 
-        return $plaintext;
+        return $payload;
+    }
+    /**
+     * Verify that the encryption payload is valid.
+     *
+     * @param  array|mixed  $data
+     * @return bool
+     */
+    private static function isInvalidPayload($data)
+    {
+        return ! is_array($data) || ! isset($data['nonce']) || ! isset($data['ciphertext']);
     }
 
     /**
